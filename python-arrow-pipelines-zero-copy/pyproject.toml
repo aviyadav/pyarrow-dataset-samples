@@ -9,5 +9,7 @@ dependencies = [
     "pandas>=3.0.1",
     "polars>=1.38.1",
     "pyarrow>=23.0.1",
+    "ray>=2.54.0; sys_platform != 'win32'",
+    "typing-extensions>=4.0.0",
     "tzdata>=2025.3",
 ]

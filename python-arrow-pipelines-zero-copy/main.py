@@ -119,6 +119,21 @@ def arrow_to_pandas():
     arr = tbl["a"].combine_chunks().to_numpy(zero_copy_only=True)
     print(arr)
 
+def ray_data_arrow():
+    import ray
+
+    ray.init()
+
+    table = pa.table({"x": [1, 2, 3], "y": ["a", "b", "c"]})
+    ds = ray.data.from_arrow(table)
+    print(ds.take_all())
+
+    # Work in Ray, then retrieve Arrow blocks
+    arrow_refs = ds.to_arrow_refs()
+    tables = ray.get(arrow_refs) # List[pyarrow.Table]
+    for t in tables:
+        print(t)
+
 
 def arrow_cuda_buffer():
     import numpy as np
@@ -142,6 +157,7 @@ if __name__ == "__main__":
     # dataset_scanner_compute(dataset)
     # arrow_tbl = duckdb_arrow_sql(dataset)
     # print(arrow_tbl)
-    # polars_lazy_scan()
+    polars_lazy_scan()
     # arrow_to_pandas()
+    # ray_data_arrow()
     # arrow_cuda_buffer()
